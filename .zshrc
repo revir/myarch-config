@@ -75,6 +75,8 @@ alias cdchromesrc='cd ~/workspace'
 alias cdemacsd='cd  ~/.emacs.d'
 alias systeminfo='~/systeminfo.sh'
 alias topu='top -u `whoami`'
+alias psgrep='ps aux | grep'
+alias sourcez='source ~/.zshrc'
 
 alias pydoc='sudo pydoc -p 8000'
 alias pydoc2='sudo pydoc2 -p 8000'
@@ -82,7 +84,7 @@ alias turnonnvidia='tee /proc/acpi/bbswitch <<< ON'
 alias turnoffnvidia='tee /proc/acpi/bbswitch <<< OFF'
 
 alias ssh11='ssh safesitex@192.168.18.11'
-alias ssh187='ssh git@192.168.18.187'
+alias ssh55='ssh git@192.168.18.55'
 alias ssh222='ssh root@222.216.1.132'
 alias sshaguideto='ssh aguideto@aguidetoshanghai.com'
 
@@ -109,3 +111,4 @@ bindkey -M emacs '\em' zle-toggle-mouse
 
 #key test
 #alias keytest="xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p"
+

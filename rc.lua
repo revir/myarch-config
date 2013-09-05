@@ -106,12 +106,16 @@ appmenu = {
    { "scrot whole desktop", "scrot -e 'mv $f ~/Images/scrot/' " },
    { "chromium", "chromium" },
    { "nautilus", "nautilus" },
-   { "thunderbird", "thunderbird" }
+   { "thunderbird", "thunderbird" },
+   { "qgit", "qgit" },
+   { "goldendict", "goldendict" },
+   { "anki", "anki" }
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
 				    { "app", appmenu },
-                                    { "open terminal", terminal }
+                                { "shutdown system", terminal .. " -e shutdown -h now" },
+   			           { "restart system", terminal .. " -e shutdown -r now" }
                                   }
                         })
 
