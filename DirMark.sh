@@ -1,6 +1,6 @@
 # mark
 export MARKPATH=$HOME/.marks
-export MARKDEFAULT=/home/revir/workspace  #设置你的默认书签，可以直接输入g跳转
+export MARKDEFAULT=ws  #设置你的默认书签，可以直接输入g跳转
 
 function g {
     local m=$1
@@ -23,7 +23,7 @@ function unmark {
     rm -i "$MARKPATH/$m"
 }
 function gs {
-    ls -l "$MARKPATH" | grep ^l | cut -d ' ' -f 10-
+    ls -l "$MARKPATH" | grep ^l | sed 's/\s\s*/ /g' | cut -d ' ' -f 9-
 }
 
 _completemarks() {
