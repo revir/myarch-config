@@ -5,6 +5,7 @@
 # If not running interactively, don't do anything
 
 # options ##################################
+CURDIRPATH=$(pwd)
 HISTFILE=~/.zsh_history
 HISTSIZE=5000
 SAVEHIST=5000
@@ -62,6 +63,10 @@ alias pin='sudo pacman -S'
 alias grep='grep --color=auto'
 alias netauto='sudo systemctl restart net-auto-wireless'
 alias netstatus='systemctl status net-auto-wireless'
+alias netstop='sudo systemctl stop net-auto-wireless'
+alias netstart='sudo systemctl start net-auto-wireless'
+alias netrestart='sudo systemctl start net-auto-wireless'
+
 alias sysstart='sudo systemctl start'
 alias sysstop='sudo systemctl stop'
 alias sysstatus='sudo systemctl status'
@@ -111,6 +116,9 @@ bindkey -M emacs '\em' zle-toggle-mouse
 
 #key test
 #alias keytest="xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p"
-source ~/myconfig-arch/DirMark.sh
+source ~/workspace/myarch-config/DirMark.sh
+source ~/workspace/myarch-config/SaveToHere.sh
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+PATH=$PATH:$HOME/.rvm/bin:/home/revir/localSoft:/home/revir/localSoft/adt-bundle-linux-x86_64-20130917/eclipse # Add RVM to PATH for scripting
+PATH=$PATH:$HOME/localSoft/adt-bundle-linux-x86_64-20130917/sdk/platform-tools
+PATH=$PATH":$HOME/localSoft/QtADB_0.8.1_linux64"
