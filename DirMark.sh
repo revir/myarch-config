@@ -1,11 +1,12 @@
 # mark
 export MARKPATH=$HOME/.marks
-export MARKDEFAULT=ws  #设置你的默认书签，可以直接输入g跳转
 
 function g {
     local m=$1
-    if [ "$m" = "" ]; then m=$MARKDEFAULT; fi
+    if [ "$m" = "" ]; then gs; 
+	else
     cd -P "$MARKPATH/$m" 2>/dev/null || echo "No such mark: $m"
+	fi
 }
 function mark {
     mkmark "$(pwd)" "$1"
