@@ -122,3 +122,7 @@ source ~/workspace/myarch-config/SaveToHere.sh
 PATH=$PATH:$HOME/.rvm/bin:/home/revir/localSoft:/home/revir/localSoft/adt-bundle-linux-x86_64-20130917/eclipse # Add RVM to PATH for scripting
 PATH=$PATH:$HOME/localSoft/adt-bundle-linux-x86_64-20130917/sdk/platform-tools
 PATH=$PATH":$HOME/localSoft/QtADB_0.8.1_linux64"
+
+##keychain, manage ssh password
+eval `keychain -Q -q --eval rsarevir_20130527`
+
