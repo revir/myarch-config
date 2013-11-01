@@ -45,7 +45,7 @@ end
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "xterm"
+terminal = "lilyterm"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -113,7 +113,8 @@ appmenu = {
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-				    { "app", appmenu },
+				    	{ "alsamixer", "xterm -e alsamixer" },
+						{ "app", appmenu },
                                 { "shutdown system", terminal .. " -e shutdown -h now" },
    			           { "restart system", terminal .. " -e shutdown -r now" }
                                   }
@@ -218,6 +219,53 @@ for s = 1, screen.count() do
 
     mywibox[s]:set_widget(layout)
 end
+
+-----------------------------
+	--by Revir
+	-- vicious
+	do 
+	   vicious = require("vicious")
+	   local batwidget = wibox.widget.textbox()
+	   vicious.register(batwidget, vicious.widgets.bat, "$1 $2% $3 | ", 5, "BAT0")
+
+	   local uptimewidget = wibox.widget.textbox()
+	   vicious.register(uptimewidget, vicious.widgets.uptime, "$4 $5 $6 | ", 7)
+
+	   local cpuwidget = wibox.widget.textbox()
+	   vicious.register(cpuwidget, vicious.widgets.cpu, "$1% | ", 3)
+
+	   local memwidget = wibox.widget.textbox()
+	   vicious.register(memwidget, vicious.widgets.mem, "$1% ($2MB/$3MB) | ", 13)
+	   -- Initialize widget
+	   --memwidget = awful.widget.progressbar()
+	   -- Progressbar properties
+	   --memwidget:set_width(8)
+	   --memwidget:set_height(10)
+	   --memwidget:set_vertical(true)
+	   --memwidget:set_background_color("#494B4F")
+	   --memwidget:set_border_color(nil)
+	   --memwidget:set_color("#AECF96")
+	   --memwidget:set_gradient_colors({ "#AECF96", "#88A175", "#FF5656" })
+	   -- Register widget
+	   -- vicious.register(memwidget, vicious.widgets.mem, "$1", 13)
+
+	   local mystatusbar = {}
+    	   for s = 1, screen.count() do
+               mystatusbar[s] = awful.wibox {position = 'bottom', screen = s}
+ 
+               local right_layout = wibox.layout.fixed.horizontal()
+               right_layout:add(batwidget)
+               right_layout:add(uptimewidget)
+               right_layout:add(cpuwidget)
+               right_layout:add(memwidget)
+               right_layout:add(mytextclock)
+	       
+               local layout = wibox.layout.align.horizontal()
+               layout:set_right(right_layout)
+               mystatusbar[s]:set_widget(layout)
+    	   end	    
+	end
+-----------------------------
 -- }}}
 
 -- {{{ Mouse bindings
@@ -256,8 +304,8 @@ globalkeys = awful.util.table.join(
 
     awful.key({}, "#122", function () awful.util.spawn("amixer -q sset PCM 4dB-") end),
     awful.key({}, "#123", function () awful.util.spawn("amixer -q sset PCM 4dB+") end),
-    awful.key({}, "#121", function () awful.util.spawn("amixer -q sset Master toggle") end), 
-    
+    awful.key({}, "#121", function () awful.util.spawn("amixer -q sset Master toggle") end),     
+
 	awful.key({ modkey, "Shift"   }, "Left", 
 		function ()
             if client.focus then
@@ -318,7 +366,7 @@ globalkeys = awful.util.table.join(
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
-    -- awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+    awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
@@ -488,8 +536,6 @@ client.connect_signal("manage", function (c, startup)
         right_layout:add(awful.titlebar.widget.stickybutton(c))
         right_layout:add(awful.titlebar.widget.ontopbutton(c))
         right_layout:add(awful.titlebar.widget.closebutton(c))
-
-	-- vicious. Add by Revir
 
         -- The title goes in the middle
         local middle_layout = wibox.layout.flex.horizontal()
