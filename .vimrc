@@ -65,3 +65,6 @@ endif
 else
 echoerr "Sorry, this version of (g)vim was not compiled with multi_byte"
 endif
+
+" vimpyre
+call pathogen#runtime_append_all_bundles("vimpyre")

@@ -109,7 +109,8 @@ appmenu = {
    { "thunderbird", "thunderbird" },
    { "qgit", "qgit" },
    { "goldendict", "goldendict" },
-   { "anki", "anki" }
+   { "anki", "anki" },
+   { "octopi", "octopi" }
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
