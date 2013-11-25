@@ -19,6 +19,7 @@ autoload -U compinit promptinit
 compinit
 promptinit
 zstyle ':completion:*' menu select
+zstyle ':completion::approximate:' max-errors 1 numeric
 setopt completealiases
 # This will set the default prompt to the walters theme
 prompt walters
@@ -43,19 +44,14 @@ bindkey -e '\eW' x-copy-region-as-kill
 bindkey -e '^W' x-kill-region
 bindkey -e '^Y' x-yank
 
-# for ibus
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=ibus
-
 # alias ####################################
 alias geditlua='sudo gedit /etc/xdg/awesome/rc.lua'
 alias enca='enca -L zh_CN'
 alias updatedb='sudo updatedb'
 alias restart='shutdown -r now'
 alias ls='ls --color=auto'
-alias ga='cd /home/revir/localSoft/goagent3.0/local && sudo python proxy.py'
-alias vimga='vim /home/revir/localSoft/goagent3.0/local/proxy.ini'
+alias ga='cd /home/revir/localSoft/goagent3.0.8/local && sudo python2 proxy.py'
+alias vimga='vim /home/revir/localSoft/goagent3.0.8/local/proxy.ini'
 alias ll='ls -l --color=auto'
 alias la='ls -a --color=auto'
 alias pse='pacman -Ss'
@@ -67,6 +63,7 @@ alias netstop='sudo systemctl stop net-auto-wireless'
 alias netstart='sudo systemctl start net-auto-wireless'
 alias netrestart='sudo systemctl start net-auto-wireless'
 
+alias sys='systemctl --type=service'
 alias sysstart='sudo systemctl start'
 alias sysstop='sudo systemctl stop'
 alias sysstatus='sudo systemctl status'
@@ -122,7 +119,11 @@ source ~/workspace/myarch-config/SaveToHere.sh
 PATH=$PATH:$HOME/.rvm/bin:/home/revir/localSoft:/home/revir/localSoft/adt-bundle-linux-x86_64-20130917/eclipse # Add RVM to PATH for scripting
 PATH=$PATH:$HOME/localSoft/adt-bundle-linux-x86_64-20130917/sdk/platform-tools
 PATH=$PATH":$HOME/localSoft/QtADB_0.8.1_linux64"
-
+export BROWSER="chromium"
 ##keychain, manage ssh password
 eval `keychain -Q -q --eval rsarevir_20130527`
+
+## samba settings
+export USERSHARES_DIR="/home/revir/movies"
+export USERSHARES_GROUP="users"
 
