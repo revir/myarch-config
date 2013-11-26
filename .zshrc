@@ -1,8 +1,50 @@
-#
-# ~/.zshrc
-#
+# Path to your oh-my-zsh configuration.
+ZSH=$HOME/.oh-my-zsh
 
-# If not running interactively, don't do anything
+# Set name of the theme to load.
+# Look in ~/.oh-my-zsh/themes/
+# Optionally, if you set this to "random", it'll load a random theme each
+# time that oh-my-zsh is loaded.
+ZSH_THEME="kennethreitz"
+
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# Set to this to use case-sensitive completion
+# CASE_SENSITIVE="true"
+
+# Uncomment this to disable bi-weekly auto-update checks
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment to change how often before auto-updates occur? (in days)
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment following line if you want to disable colors in ls
+# DISABLE_LS_COLORS="true"
+
+# Uncomment following line if you want to disable autosetting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment following line if you want to disable command autocorrection
+# DISABLE_CORRECTION="true"
+
+# Uncomment following line if you want red dots to be displayed while waiting for completion
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment following line if you want to disable marking untracked files under
+# VCS as dirty. This makes repository status check for large repositories much,
+# much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+plugins=(git)
+
+source $ZSH/oh-my-zsh.sh
+
+# Customize to your needs...
 
 # options ##################################
 CURDIRPATH=$(pwd)
@@ -19,34 +61,10 @@ autoload -U compinit promptinit
 compinit
 promptinit
 zstyle ':completion:*' menu select
+
 setopt completealiases
 # This will set the default prompt to the walters theme
-prompt walters
-
-# copy and paste
-x-copy-region-as-kill () {
-  zle copy-region-as-kill
-  print -rn $CUTBUFFER | xsel -i
-}
-zle -N x-copy-region-as-kill
-x-kill-region () {
-  zle kill-region
-  print -rn $CUTBUFFER | xsel -i
-}
-zle -N x-kill-region
-x-yank () {
-  CUTBUFFER=$(xsel -o)
-  zle yank
-}
-zle -N x-yank
-bindkey -e '\eW' x-copy-region-as-kill
-bindkey -e '^W' x-kill-region
-bindkey -e '^Y' x-yank
-
-# for ibus
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=ibus
+#prompt walters
 
 # alias ####################################
 alias geditlua='sudo gedit /etc/xdg/awesome/rc.lua'
@@ -54,8 +72,8 @@ alias enca='enca -L zh_CN'
 alias updatedb='sudo updatedb'
 alias restart='shutdown -r now'
 alias ls='ls --color=auto'
-alias ga='cd /home/revir/localSoft/goagent3.0/local && sudo python proxy.py'
-alias vimga='vim /home/revir/localSoft/goagent3.0/local/proxy.ini'
+alias ga='cd /home/revir/localSoft/goagent3.0.8/local && sudo python2 proxy.py'
+alias vimga='vim /home/revir/localSoft/goagent3.0.8/local/proxy.ini'
 alias ll='ls -l --color=auto'
 alias la='ls -a --color=auto'
 alias pse='pacman -Ss'
@@ -67,6 +85,7 @@ alias netstop='sudo systemctl stop net-auto-wireless'
 alias netstart='sudo systemctl start net-auto-wireless'
 alias netrestart='sudo systemctl start net-auto-wireless'
 
+alias sys='systemctl --type=service'
 alias sysstart='sudo systemctl start'
 alias sysstop='sudo systemctl stop'
 alias sysstatus='sudo systemctl status'
@@ -122,7 +141,7 @@ source ~/workspace/myarch-config/SaveToHere.sh
 PATH=$PATH:$HOME/.rvm/bin:/home/revir/localSoft:/home/revir/localSoft/adt-bundle-linux-x86_64-20130917/eclipse # Add RVM to PATH for scripting
 PATH=$PATH:$HOME/localSoft/adt-bundle-linux-x86_64-20130917/sdk/platform-tools
 PATH=$PATH":$HOME/localSoft/QtADB_0.8.1_linux64"
-
+export BROWSER="chromium"
 ##keychain, manage ssh password
 eval `keychain -Q -q --eval rsarevir_20130527`
 
@@ -132,3 +151,6 @@ export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
 export WORKON_HOME=$HOME/.virtualenvs
 source /usr/bin/virtualenvwrapper.sh
 
+## samba settings
+export USERSHARES_DIR="/home/revir/movies"
+export USERSHARES_GROUP="users"
