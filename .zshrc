@@ -61,7 +61,7 @@ autoload -U compinit promptinit
 compinit
 promptinit
 zstyle ':completion:*' menu select
-zstyle ':completion::approximate:' max-errors 1 numeric
+
 setopt completealiases
 # This will set the default prompt to the walters theme
 #prompt walters
