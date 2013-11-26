@@ -126,3 +126,9 @@ PATH=$PATH":$HOME/localSoft/QtADB_0.8.1_linux64"
 ##keychain, manage ssh password
 eval `keychain -Q -q --eval rsarevir_20130527`
 
+##python virtualenvwrapper
+export PIP_REQUIRE_VIRTUALENV=true
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/bin/virtualenvwrapper.sh
+
