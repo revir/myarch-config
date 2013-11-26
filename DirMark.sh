@@ -1,48 +1,48 @@
 # mark
-export GMARKPATH=$HOME/.marks
+export CMARKPATH=$HOME/.marks
 
-function g {
+function c {
     local m=$1
     if [ "$m" = "" ]; then 
-        g show
+        c show
     elif [[ "$m" = "show" ]]; then
-        ls -l "$GMARKPATH" | grep ^l | sed 's/\s\s*/ /g' | cut -d ' ' -f 9-
+        ls -l "$CMARKPATH" | grep ^l | sed 's/\s\s*/ /g' | cut -d ' ' -f 9-
 
     elif [[ "$m" = "mark" ]]; then
-        g setmark "$(pwd)" "$2"  
+        c setmark "$(pwd)" "$2"  
 
     elif [[ "$m" = "setmark" ]]; then
-        mkdir -p "$GMARKPATH"
+        mkdir -p "$CMARKPATH"
         local target=$(realpath "$2")
         local name="$3"
         if [[ -z "$target" || -z "$name"  || ! (-d "$target") ]]; then
             echo "wrong argument!"
             echo "------------------"
-            g help
+            c help
         fi
         
         echo "setmark $target $name"
-        rm -f "$GMARKPATH/$name"
-        ln -s "$target" "$GMARKPATH/$name"
+        rm -f "$CMARKPATH/$name"
+        ln -s "$target" "$CMARKPATH/$name"
 
     elif [[ "$m" = "unmark" ]]; then
         local name="$2"
         if [ "$name" = "" ]; then 
             echo "wrong argument!"
             echo "------------------"
-            g help
+            c help
         fi
-        rm -f "$GMARKPATH/$name"
+        rm -f "$CMARKPATH/$name"
 
     elif [[ "$m" = "help" ]]; then
         echo
-        echo "welcome to use gmark!"
+        echo "welcome to use dir mark!"
         echo "usage: "
-        echo "g [show]"
-        echo "g mark <shortname>"
-        echo "g setmark <directory> <shortname>"
-        echo "g unmark <shortname>"
-        echo "g <shortname>"
+        echo "c [show]"
+        echo "c mark <shortname>"
+        echo "c setmark <directory> <shortname>"
+        echo "c unmark <shortname>"
+        echo "c <shortname>"
         echo
         echo "these option mean:"
         echo "show          show all the marks."
@@ -52,14 +52,28 @@ function g {
         echo
 
     else
-        cd -P "$GMARKPATH/$m" 2>/dev/null || echo "No such mark: $m"
+        cd -P "$CMARKPATH/$m" 2>/dev/null || echo "No such mark: $m"
     fi
 }
 
-# _completemarks() {
-#     local curw=${COMP_WORDS[COMP_CWORD]}
-#     local wordlist=$(ls -l "$MARKPATH" | grep ^l | cut -d ' ' -f 13)
-#     COMPREPLY=($(compgen -W '${wordlist[@]}' -- "$curw"))
-#     return 0
-# }
-#complete -F _completemarks g unmark
+_completemarks_bash() {
+    local curw=${COMP_WORDS[COMP_CWORD]}
+    local wordlist=$(ls $CMARKPATH)
+    COMPREPLY=($(compgen -W '${wordlist[@]}' -- "$curw"))
+    return 0
+}
+
+function _completemarks_zsh {
+  reply=($(ls $CMARKPATH))
+}
+
+if [[ $(basename $SHELL) = 'zsh'  ]]; then
+    compctl -K _completemarks_zsh c
+
+elif [[ $(basename $SHELL) = 'bash' ]]; then
+    complete -F _completemarks_bash c
+fi
+
+
+
+
