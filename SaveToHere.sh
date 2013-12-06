@@ -1,5 +1,6 @@
 #Save files to this repository.
-export SAVETOHERE_DIR="$(pwd)"
+# export SAVETOHERE_DIR="$(pwd)"  It's wrong to get the file's directory
+export SAVETOHERE_DIR="$(dirname $(realpath $0))"
 export SAVETOHERE_LIST="$SAVETOHERE_DIR/.savelist"
 
 function s {

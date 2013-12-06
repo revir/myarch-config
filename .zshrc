@@ -47,7 +47,7 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 
 # options ##################################
-CURDIRPATH=$(pwd)
+# CURDIRPATH=$(pwd)  ##这个会导致 lilyterm 新建的标签页的路径变为 CURDIRPATH
 HISTFILE=~/.zsh_history
 HISTSIZE=5000
 SAVEHIST=5000
@@ -146,7 +146,6 @@ export BROWSER="chromium"
 eval `keychain -Q -q --eval rsarevir_20130527`
 
 ##python virtualenvwrapper
-export PIP_REQUIRE_VIRTUALENV=true
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
 export WORKON_HOME=$HOME/.virtualenvs
 source /usr/bin/virtualenvwrapper.sh
