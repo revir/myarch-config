@@ -111,7 +111,11 @@ appmenu = {
    { "qgit", "qgit" },
    { "goldendict", "goldendict" },
    { "anki", "anki" },
-   { "octopi", "octopi" }
+   { "octopi", "octopi" },
+   { "dmidecode, show hardware info", "dmidecode" },
+   { "lshw, hardware info", "sudo lshw -X"},
+   { "openshot, video maker", "openshot"},
+   { "mhwaveedit, audio editor", "mhwaveedit"}
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
