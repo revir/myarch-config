@@ -1,0 +1,65 @@
+alias cls='clear'
+alias ll='ls -l'
+alias la='ls -a'
+alias vi='vim'
+alias grep="grep --color=auto"
+
+alias vimz='vim ~/.zshrc'
+alias sublimealiases='sublime ~/.aliases'
+alias ohmyzsh='sublime ~/.oh-my-zsh'
+alias sublimeohmyzsh='sublime ~/.oh-my-zsh'
+alias vimohmyzsh='vim ~/.oh-my-zsh'
+alias sublimez='sublime ~/.zshrc'
+alias sourcez='source ~/.zshrc'
+
+alias topu='top -u `whoami`'
+alias psgrep='ps aux | grep'
+alias enca='enca -L zh_CN'
+alias updatedb='sudo updatedb'
+alias restart='shutdown -r now'
+
+alias sysstart='sudo systemctl start'
+alias sysstatus='sudo systemctl status'
+alias sysstop='sudo systemctl stop'
+alias sysenable='sudo systemctl enable'
+alias sysdisable='sudo systemctl disable'
+
+alias pse='pacman -Ss'
+alias pin='sudo pacman -S'
+alias pq='pacman -Q'
+alias pql='pacman -Ql'
+alias pqi='pacman -Qi'
+alias pqo='pacman -Qo'
+alias psy='sudo pacman -Sy'
+alias psyy='sudo pacman -Syy'
+
+alias ssh222='ssh webimager@222.216.1.132'
+alias ssh222root='ssh root@222.216.1.132'
+alias ssh22='ssh webimager@192.168.1.22'
+alias ssh22root='ssh root@192.168.1.22'
+alias ssh23='ssh webimager@192.168.1.23'
+alias ssh23root='ssh root@192.168.1.23'
+alias ssh4='ssh root@192.168.1.4'
+alias sshproxy='ssh root@192.168.1.4'
+alias ssh5='ssh root@192.168.1.5'
+alias sshlog='ssh root@192.168.1.5'
+alias sshaguideto='ssh aguideto@aguidetoshanghai.com'
+
+alias pipcache='pip install --download ${HOME}/.pip-packages'
+alias pipinstall='pip install --no-index --find-links=file://${HOME}/.pip-packages/'
+alias pip2cache='pip2.7 install --download ${HOME}/.pip-packages'
+alias pip2install='pip2.7 install --no-index --find-links=file://${HOME}/.pip-packages/'
+
+alias -s html=sublime   # 在命令行直接输入后缀为 html 的文件名，会在 TextMate 中打开
+alias -s rb=sublime     # 在命令行直接输入 ruby 文件，会在 TextMate 中打开
+alias -s py=sublime       # 在命令行直接输入 python 文件，会用 vim 中打开，以下类似
+alias -s js=sublime
+alias -s c=sublime
+alias -s java=sublime
+alias -s txt=sublime
+alias -s coffee=sublime
+alias -s iced=sublime
+alias -s gz='tar -xzvf'
+alias -s tgz='tar -xzvf'
+alias -s zip='unzip'
+alias -s bz2='tar -xjvf'

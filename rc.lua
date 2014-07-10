@@ -3,10 +3,6 @@ local gears = require("gears")
 local awful = require("awful")
 awful.rules = require("awful.rules")
 require("awful.autofocus")
-
--- by Revir
--- require("revelation")
-
 -- Widget and layout library
 local wibox = require("wibox")
 -- Theme handling library
@@ -14,6 +10,7 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
+local vicious = require("vicious")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -41,7 +38,7 @@ end
 -- }}}
 
 -- {{{ Variable definitions
--- Themes define colours, icons, and wallpapers
+-- Themes define colours, icons, font and wallpapers.
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
@@ -62,17 +59,17 @@ local layouts =
 {
 	-- Customized by Revir.
     awful.layout.suit.floating,
-    awful.layout.suit.tile,
+    awful.layout.suit.tile
   --  awful.layout.suit.tile.left,
   --  awful.layout.suit.tile.bottom,
   --  awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
+    -- awful.layout.suit.fair,
   --  awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
+    -- awful.layout.suit.spiral,
   --  awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
+    -- awful.layout.suit.max,
   --  awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier
+    -- awful.layout.suit.magnifier
 }
 -- }}}
 
@@ -90,7 +87,8 @@ tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
 		-- Customized by Revir
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[2])
+    tags[s] = awful.tag({ "1.www", "2.IDE", "3", "4", "5", "6.mail", "7.WIN", "8.files", "9.term" }, s,
+  {layouts[1], layouts[2], layouts[2], layouts[2], layouts[2], layouts[2], layouts[2], layouts[2], layouts[2]})
 end
 -- }}}
 
@@ -137,6 +135,28 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
 
+-- add by Revir
+--  Network usage widget
+netwidget = wibox.widget.textbox()
+vicious.register(netwidget, vicious.widgets.net, '<span color="#CC9393">   ${enp2s0 down_kb}</span> <span color="#7F9F7F"> ${enp2s0 up_kb}  </span>', 3)
+-- Memory usage (progressbar)
+memwidget = awful.widget.progressbar()
+memwidget:set_width(8)
+memwidget:set_height(10)
+memwidget:set_vertical(true)
+memwidget:set_background_color("#494B4F")
+memwidget:set_border_color(nil)
+memwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = { {0, "#AECF96"}, {0.5, "#88A175"}, 
+                    {1, "#FF5656"}}})
+vicious.register(memwidget, vicious.widgets.mem, "$1", 13)
+-- CPU usage (graph)
+cpuwidget = awful.widget.graph()
+cpuwidget:set_width(50)
+cpuwidget:set_background_color("#494B4F")
+cpuwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = { {0, "#FF5656"}, {0.5, "#88A175"}, 
+                    {1, "#AECF96" }}})
+vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
+
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -173,7 +193,9 @@ mytasklist.buttons = awful.util.table.join(
                                                   instance:hide()
                                                   instance = nil
                                               else
-                                                  instance = awful.menu.clients({ width=250 })
+                                                  instance = awful.menu.clients({
+                                                      theme = { width = 250 }
+                                                  })
                                               end
                                           end),
                      awful.button({ }, 4, function ()
@@ -203,7 +225,7 @@ for s = 1, screen.count() do
     mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
 
     -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", screen = s })
+    mywibox[s] = awful.wibox({ position = "bottom", screen = s })
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
@@ -214,6 +236,12 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+
+    -- add by Revir
+    right_layout:add(cpuwidget)
+    right_layout:add(memwidget)
+    right_layout:add(netwidget)
+
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
@@ -225,53 +253,6 @@ for s = 1, screen.count() do
 
     mywibox[s]:set_widget(layout)
 end
-
------------------------------
-	--by Revir
-	-- vicious
-	do 
-	   vicious = require("vicious")
-	   local batwidget = wibox.widget.textbox()
-	   vicious.register(batwidget, vicious.widgets.bat, "$1 $2% $3 | ", 5, "BAT0")
-
-	   local uptimewidget = wibox.widget.textbox()
-	   vicious.register(uptimewidget, vicious.widgets.uptime, "$4 $5 $6 | ", 7)
-
-	   local cpuwidget = wibox.widget.textbox()
-	   vicious.register(cpuwidget, vicious.widgets.cpu, "$1% | ", 3)
-
-	   local memwidget = wibox.widget.textbox()
-	   vicious.register(memwidget, vicious.widgets.mem, "$1% ($2MB/$3MB) | ", 13)
-	   -- Initialize widget
-	   --memwidget = awful.widget.progressbar()
-	   -- Progressbar properties
-	   --memwidget:set_width(8)
-	   --memwidget:set_height(10)
-	   --memwidget:set_vertical(true)
-	   --memwidget:set_background_color("#494B4F")
-	   --memwidget:set_border_color(nil)
-	   --memwidget:set_color("#AECF96")
-	   --memwidget:set_gradient_colors({ "#AECF96", "#88A175", "#FF5656" })
-	   -- Register widget
-	   -- vicious.register(memwidget, vicious.widgets.mem, "$1", 13)
-
-	   local mystatusbar = {}
-    	   for s = 1, screen.count() do
-               mystatusbar[s] = awful.wibox {position = 'bottom', screen = s}
- 
-               local right_layout = wibox.layout.fixed.horizontal()
-               right_layout:add(batwidget)
-               right_layout:add(uptimewidget)
-               right_layout:add(cpuwidget)
-               right_layout:add(memwidget)
-               right_layout:add(mytextclock)
-	       
-               local layout = wibox.layout.align.horizontal()
-               layout:set_right(right_layout)
-               mystatusbar[s]:set_widget(layout)
-    	   end	    
-	end
------------------------------
 -- }}}
 
 -- {{{ Mouse bindings
@@ -427,6 +408,7 @@ clientkeys = awful.util.table.join(
 -- This should map on the top row of your keyboard, usually 1 to 9.
 for i = 1, 9 do
     globalkeys = awful.util.table.join(globalkeys,
+        -- View tag only.
         awful.key({ modkey }, "#" .. i + 9,
                   function ()
                         local screen = mouse.screen
@@ -435,6 +417,7 @@ for i = 1, 9 do
                            awful.tag.viewonly(tag)
                         end
                   end),
+        -- Toggle tag.
         awful.key({ modkey, "Control" }, "#" .. i + 9,
                   function ()
                       local screen = mouse.screen
@@ -443,18 +426,24 @@ for i = 1, 9 do
                          awful.tag.viewtoggle(tag)
                       end
                   end),
+        -- Move client to tag.
         awful.key({ modkey, "Shift" }, "#" .. i + 9,
                   function ()
-                      local tag = awful.tag.gettags(client.focus.screen)[i]
-                      if client.focus and tag then
-                          awful.client.movetotag(tag)
+                      if client.focus then
+                          local tag = awful.tag.gettags(client.focus.screen)[i]
+                          if tag then
+                              awful.client.movetotag(tag)
+                          end
                      end
                   end),
+        -- Toggle tag.
         awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
                   function ()
-                      local tag = awful.tag.gettags(client.focus.screen)[i]
-                      if client.focus and tag then
-                          awful.client.toggletag(tag)
+                      if client.focus then
+                          local tag = awful.tag.gettags(client.focus.screen)[i]
+                          if tag then
+                              awful.client.toggletag(tag)
+                          end
                       end
                   end))
 end
@@ -469,12 +458,14 @@ root.keys(globalkeys)
 -- }}}
 
 -- {{{ Rules
+-- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
     -- All clients will match this rule.
     { rule = { },
       properties = { border_width = beautiful.border_width,
                      border_color = beautiful.border_normal,
                      focus = awful.client.focus.filter,
+                     raise = true,
                      keys = clientkeys,
                      buttons = clientbuttons } },
     { rule = { class = "MPlayer" },
@@ -483,12 +474,20 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "gimp" },
       properties = { floating = true } },
-	-- Customized by Revir
-	{ rule = { name = "Program Console"},
-	  properties = { floating = true } },
-    -- Set Firefox to always map on tags number 2 of screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { tag = tags[1][2] } },
+
+    -- add by Revir
+    { rule = { class = "Chromium" },
+      properties = { tag = tags[1][1] } },
+    { rule = { class = "Sublime" },
+      properties = { tag = tags[1][2] } },
+    { rule = { class = "Thunderbird" },
+      properties = { tag = tags[1][6] } },
+    { rule = { class = "Remmina" },
+      properties = { tag = tags[1][7] } },
+    { rule = { class = "Nautilus" },
+      properties = { tag = tags[1][8] } },
+    { rule = { class = "LilyTerm" },
+      properties = { tag = tags[1][9] } }
 }
 -- }}}
 
@@ -563,4 +562,29 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+-- }}}
+
+-- {{{ Auto start
+-- add by Revir
+function run_once(prg,arg_string,pname,screen)
+    if not prg then
+        do return nil end
+    end
+
+    if not pname then
+       pname = prg
+    end
+
+    if not arg_string then 
+        awful.util.spawn_with_shell("pgrep -u $USER -x '" .. pname .. "' || (" .. prg .. ")",screen)
+    else
+        awful.util.spawn_with_shell("pgrep -u $USER -x '" .. pname .. "' || (" .. prg .. " " .. arg_string .. ")",screen)
+    end
+end
+
+run_once('chromium')
+run_once('thunderbird')
+run_once('remmina')
+run_once('sublime')
+run_once('lilyterm')
 -- }}}
