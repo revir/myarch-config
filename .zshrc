@@ -83,7 +83,12 @@ bindkey '\e[B' down-line-or-beginning-search
 # ssh
 # export SSH_KEY_PATH="~/.ssh/id_rsa"
 if [ -e /usr/bin/keychain ]; then
-  /usr/bin/keychain -Q -q ~/.ssh/id_rsa
+  if [[ -f ~/.ssh/id_rsa ]]; then
+    /usr/bin/keychain -Q -q ~/.ssh/id_rsa
+  elif [[ -f ~/.ssh/rsarevir_20130527 ]]; then
+    /usr/bin/keychain -Q -q ~/.ssh/rsarevir_20130527
+  fi
+  
   [[ -f $HOME/.keychain/arch-revir-sh ]] && source $HOME/.keychain/arch-revir-sh
 fi
 
@@ -95,7 +100,7 @@ fi
 [[ -s /etc/profile.d/autojump.zsh ]] && . /etc/profile.d/autojump.zsh
 
 #setup python virtualenv
-if which virtualenvwrapper.sh; then
+if which virtualenvwrapper.sh 1>/dev/null; then
   export VIRTUALENVWRAPPER_PYTHON=$(which python2.7)
   if [[ -d ~/.virtualenvs ]]; then
     export WORKON_HOME=${HOME}/.virtualenvs
