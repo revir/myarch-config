@@ -90,6 +90,7 @@ if [ -e /usr/bin/keychain ]; then
   fi
   
   [[ -f $HOME/.keychain/arch-revir-sh ]] && source $HOME/.keychain/arch-revir-sh
+  [[ -f $HOME/.keychain/mylinux-sh ]] && source $HOME/.keychain/mylinux-sh
 fi
 
 # my custom aliases
