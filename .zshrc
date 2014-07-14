@@ -57,7 +57,10 @@ if [[ -e $ZSH/oh-my-zsh.sh ]]; then
 
   #my custom zsh theme.
   local ret_status="%(?:%{$fg_bold[green]%}➜:%{$fg_bold[red]%}➜%s)"
-  local host_info="%{$fg_bold[white]%}%n%{$reset_color%}@%{$fg_bold[red]%}%m%{$reset_color%}"
+  local host_info="%{$fg_bold[green]%}%n%{$reset_color%}@%{$fg_bold[red]%}%m%{$reset_color%}"
+  if [[ -n $SSH_CONNECTION ]]; then
+    host_info="%{$fg_bold[white]%}%n%{$reset_color%}@%{$fg_bold[white]%}%m%{$reset_color%}"
+  fi
   PROMPT='${ret_status}${host_info}%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
   #This line add a right prompt to show the current path. --add by Revir
   RPROMPT='%{$fg[green]%} %~%{$reset_color%}'
