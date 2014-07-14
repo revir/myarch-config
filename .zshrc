@@ -6,6 +6,8 @@ export ZSH=$HOME/.oh-my-zsh
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 ZSH_THEME="robbyrussell"
+# ZSH_THEME="gianu"
+# ZSH_THEME="kolo"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -50,8 +52,16 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git)
 
-[[ -e $ZSH/oh-my-zsh.sh ]] && source $ZSH/oh-my-zsh.sh
+if [[ -e $ZSH/oh-my-zsh.sh ]]; then
+  source $ZSH/oh-my-zsh.sh
 
+  #my custom zsh theme.
+  local ret_status="%(?:%{$fg_bold[green]%}➜:%{$fg_bold[red]%}➜%s)"
+  local host_info="%{$fg_bold[white]%}%n%{$reset_color%}@%{$fg_bold[red]%}%m%{$reset_color%}"
+  PROMPT='${ret_status}${host_info}%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
+  #This line add a right prompt to show the current path. --add by Revir
+  RPROMPT='%{$fg[green]%} %~%{$reset_color%}'
+fi
 # search the history for a line beginning with the current line up to the cursor.
 # see man zshzle and man zshcontrib
 autoload -Uz up-line-or-beginning-search
