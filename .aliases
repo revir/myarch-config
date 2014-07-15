@@ -18,21 +18,6 @@ alias enca='enca -L zh_CN'
 alias updatedb='sudo updatedb'
 alias restart='shutdown -r now'
 
-alias sysstart='sudo systemctl start'
-alias sysstatus='sudo systemctl status'
-alias sysstop='sudo systemctl stop'
-alias sysenable='sudo systemctl enable'
-alias sysdisable='sudo systemctl disable'
-
-alias pse='pacman -Ss'
-alias pin='sudo pacman -S'
-alias pq='pacman -Q'
-alias pql='pacman -Ql'
-alias pqi='pacman -Qi'
-alias pqo='pacman -Qo'
-alias psy='sudo pacman -Sy'
-alias psyy='sudo pacman -Syy'
-
 alias ssh222='ssh webimager@222.216.1.132'
 alias ssh222root='ssh root@222.216.1.132'
 alias ssh22='ssh webimager@192.168.1.22'
@@ -63,3 +48,36 @@ alias -s gz='tar -xzvf'
 alias -s tgz='tar -xzvf'
 alias -s zip='unzip'
 alias -s bz2='tar -xjvf'
+
+if [[ -f /etc/centos-release ]]; then
+  alias superstart='sudo service webimagersuper start'
+  alias superrestart='sudo service webimagersuper restart'
+  alias superstop='sudo service webimagersuper stop'
+  alias superstatus='sudo service webimagersuper status'
+  alias supertail='cd /opt/webimager/webimagersuper && tail log/safesite_super.log'
+
+  alias frontstart='sudo service webimagerfrontend start'
+  alias frontrestart='sudo service webimagerfrontend restart'
+  alias frontstop='sudo service webimagerfrontend stop'
+  alias frontstatus='sudo service webimagerfrontend status'
+
+  alias yse='sudo yum search'
+  alias yin='sudo yum install'
+  alias yql='repoquery -ql'
+ 
+elif [[ -f /etc/arch-release ]]; then
+  alias sysstart='sudo systemctl start'
+  alias sysstatus='sudo systemctl status'
+  alias sysstop='sudo systemctl stop'
+  alias sysenable='sudo systemctl enable'
+  alias sysdisable='sudo systemctl disable'
+
+  alias pse='pacman -Ss'
+  alias pin='sudo pacman -S'
+  alias pq='pacman -Q'
+  alias pql='pacman -Ql'
+  alias pqi='pacman -Qi'
+  alias pqo='pacman -Qo'
+  alias psy='sudo pacman -Sy'
+  alias psyy='sudo pacman -Syy'  
+fi
