@@ -57,6 +57,7 @@ if [[ -f /etc/centos-release ]]; then
   alias superstop='service webimagersuper stop'
   alias superstatus='service webimagersuper status'
   alias supertail='cd /opt/webimager/webimagersuper && tail log/safesite_super.log'
+  alias supertail100='cd /opt/webimager/webimagersuper && tail -100 log/safesite_super.log'
 
   alias frontstart='service webimagerfrontend start'
   alias frontrestart='service webimagerfrontend restart'

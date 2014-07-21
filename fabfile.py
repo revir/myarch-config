@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from fabric.api import env
-from fabric.operations import run, put
+from fabric.operations import run, put, local
 # from fabric.context_managers import cd, lcd
 import os, time
 
@@ -23,8 +23,9 @@ deployHosts = [
     'user': 'webimager'
   },
   {
-    'host': '222.216.1.4',
-    'hostShortName': '4'
+    'host': '192.168.1.4',
+    'hostShortName': '4',
+    'user': 'webimager'
   }
 ]
 deployFiles = [
@@ -33,8 +34,21 @@ deployFiles = [
     # 'rpath': '~/'
   },{
     'name': '.aliases'
+  },{
+    'name': 'rc.lua',
+    'rpath': '~/.config/awesome/'
   }
 ]
+
+_run = run
+_put = put
+
+def _initLoc():
+  def localPut(f, path):
+    local('cp %s %s' % (f, path))
+  global _run, _put
+  _run = local
+  _put = localPut
 
 def getHost(name):
   for item in deployHosts:
@@ -50,14 +64,18 @@ def getFile(name):
 def backupRemote(name, rpath):
   dateStr = time.strftime('%F')
   name = os.path.join(rpath, name)
-  run('cp %s %s.%s.bk' % (name, name, dateStr))
+  _run('mv %s %s.%s.bk' % (name, name, dateStr))
 
-def deploy(server, name='all'):
-  hostInfo = getHost(server)
-  if not hostInfo:
-    return
-  env.host_string = hostInfo['host']
-  env.user = hostInfo.get('user') or 'root'
+def deploy(server='loc', name='all'):
+  if server is 'loc':
+    _initLoc()
+  else:
+    hostInfo = getHost(server)
+    if not hostInfo:
+      return
+    env.host_string = hostInfo['host']
+    env.user = hostInfo.get('user') or 'root'
+
   if name is 'all':
     for item in deployFiles:
       deploy(server, item['name'])
@@ -67,4 +85,4 @@ def deploy(server, name='all'):
   if f:
     rpath = f.get('rpath') or '~/'
     backupRemote(f['name'], rpath)
-    put(f['name'], rpath)
+    _put(f['name'], rpath)
