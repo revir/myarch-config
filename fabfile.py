@@ -50,12 +50,20 @@ def _initLoc():
   _run = local
   _put = localPut
 
+def _initRemote(user, host_string):
+  global _run, _put
+  _run = run
+  _put = put
+  env.host_string = host_string
+  env.user = user
+
 def getHost(name):
   for item in deployHosts:
     if item.get('hostShortName') == name:
       return item
     if item.get('host') == name:
       return item
+      
 def getFile(name):
   for item in deployFiles:
     if item.get('name') == name:
@@ -73,8 +81,7 @@ def deploy(server='loc', name='all'):
     hostInfo = getHost(server)
     if not hostInfo:
       return
-    env.host_string = hostInfo['host']
-    env.user = hostInfo.get('user') or 'root'
+    _initRemote(hostInfo.get('user') or 'root', hostInfo['host'])
 
   if name is 'all':
     for item in deployFiles:
