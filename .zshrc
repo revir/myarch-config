@@ -112,6 +112,7 @@ if [ -f ~/.aliases ]; then
 fi
 
 [[ -s /etc/profile.d/autojump.zsh ]] && . /etc/profile.d/autojump.zsh
+[[ -s ~/.autojump/etc/profile.d/autojump.zsh ]] && source ~/.autojump/etc/profile.d/autojump.zsh
 
 #setup python virtualenv
 if which virtualenvwrapper.sh 1>/dev/null; then
@@ -123,3 +124,5 @@ if which virtualenvwrapper.sh 1>/dev/null; then
   fi
   source $(which virtualenvwrapper.sh)
 fi
+
+autoload -U compinit && compinit -u
