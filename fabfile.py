@@ -5,6 +5,7 @@ from fabric.api import env
 from fabric.operations import run, put, local
 # from fabric.context_managers import cd, lcd
 import os, time
+import fabric
 
 deployHosts = [
   {
@@ -72,7 +73,18 @@ def getFile(name):
 def backupRemote(name, rpath):
   dateStr = time.strftime('%F')
   name = os.path.join(rpath, name)
-  _run('mv %s %s.%s.bk' % (name, name, dateStr))
+  _run('[ -e %s ] && mv %s %s.%s.bk' % (name, name, name, dateStr))
+
+def _installZsh():
+  if not fabric.contrib.files.exists('/bin/zsh'):
+    if fabric.contrib.files.exists('/usr/bin/pacman'):
+      _run('sudo pacman -S zsh')
+    elif fabric.contrib.files.exists('/usr/bin/yum'):
+      _run('sudo yum install zsh')
+
+def _installOhMyZsh():
+  if not fabric.contrib.files.exists('~/.oh-my-zsh'):
+    _run('wget --no-check-certificate http://install.ohmyz.sh -O - | sh')
 
 def deploy(server='loc', name='all'):
   if server is 'loc':
@@ -88,8 +100,12 @@ def deploy(server='loc', name='all'):
       deploy(server, item['name'])
     return
   
+  _installZsh()
+  _installOhMyZsh()
+
   f = getFile(name)
   if f:
     rpath = f.get('rpath') or '~/'
-    backupRemote(f['name'], rpath)
-    _put(f['name'], rpath)
+    if fabric.contrib.files.exists(rpath):
+      backupRemote(f['name'], rpath)
+      _put(f['name'], rpath)
