@@ -85,7 +85,8 @@ def getFile(name):
 def backupRemote(name, rpath):
   dateStr = time.strftime('%F')
   name = os.path.join(rpath, name)
-  _run('[ -e %s ] && mv %s %s.%s.bk' % (name, name, name, dateStr))
+  if _exists(name):
+    _run('mv %s %s.%s.bk' % (name, name, dateStr))
 
 def _installZsh():
   if not _exists('/bin/zsh'):
