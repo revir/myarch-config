@@ -114,7 +114,7 @@ if [ -f ~/.aliases ]; then
 fi
 
 #setup python virtualenv
-if which virtualenvwrapper.sh 1>/dev/null; then
+if which virtualenvwrapper.sh 1>/dev/null 2>&1; then
   export VIRTUALENVWRAPPER_PYTHON=$(which python2.7)
   if [[ -d ~/.virtualenvs ]]; then
     export WORKON_HOME=${HOME}/.virtualenvs

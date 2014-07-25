@@ -32,6 +32,11 @@ deployHosts = [
     'host': '192.168.1.5',
     'hostShortName': '5',
     'user': 'root'
+  },
+  {
+    'host': '192.168.1.40',
+    'hostShortName': '40',
+    'user': 'ari'
   }
 ]
 deployFiles = [
@@ -108,6 +113,8 @@ def _installAutoJump():
     if not _exists('~/.autojump'):
       _run('git clone git://github.com/joelthelion/autojump.git ~/autojump')
       _run('cd ~/autojump && python install.py')
+    if not _exists('/usr/local/bin/autojump'):
+      _run('sudo cp ~/.autojump/bin/autojump  /usr/local/bin/')
 
 def deploy(server='loc', name='all'):
   if server is 'loc':
