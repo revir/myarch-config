@@ -50,7 +50,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(common-aliases git sublime autojump colorize command-not-found fabric extract node npm python)
+plugins=(git sublime autojump colorize command-not-found fabric extract node npm python)
 [ -e /etc/arch-release ] && plugins+=archlinux && plugins+=systemd #just for arch linux
 [ -e /usr/bin/yum ] && plugins+=yum  #just for yum.
 
