@@ -50,7 +50,9 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
+plugins=(common-aliases git sublime autojump colorize command-not-found fabric extract node npm python)
+[ -e /etc/arch-release ] && plugins+=archlinux && plugins+=systemd #just for arch linux
+[ -e /usr/bin/yum ] && plugins+=yum  #just for yum.
 
 if [[ -e $ZSH/oh-my-zsh.sh ]]; then
   source $ZSH/oh-my-zsh.sh
@@ -110,9 +112,6 @@ fi
 if [ -f ~/.aliases ]; then
     . ~/.aliases
 fi
-
-[[ -s /etc/profile.d/autojump.zsh ]] && . /etc/profile.d/autojump.zsh
-[[ -s ~/.autojump/etc/profile.d/autojump.zsh ]] && source ~/.autojump/etc/profile.d/autojump.zsh
 
 #setup python virtualenv
 if which virtualenvwrapper.sh 1>/dev/null; then

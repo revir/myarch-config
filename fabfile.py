@@ -26,7 +26,7 @@ deployHosts = [
   {
     'host': '192.168.1.4',
     'hostShortName': '4',
-    'user': 'webimager'
+    'user': 'root'
   },
   {
     'host': '192.168.1.5',
