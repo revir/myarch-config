@@ -3,14 +3,17 @@ alias ll='ls -l'
 alias la='ls -a'
 alias vi='vim'
 alias grep="grep --color=auto"
+alias ga="python2 /home/revir/localSoft/goagent3.1.18/local/proxy.py"
 
 alias vimz='vim ~/.zshrc'
+alias vimaliases='vim ~/.aliases'
 alias sublimealiases='sublime ~/.aliases'
 alias ohmyzsh='sublime ~/.oh-my-zsh'
 alias sublimeohmyzsh='sublime ~/.oh-my-zsh'
 alias vimohmyzsh='vim ~/.oh-my-zsh'
 alias sublimez='sublime ~/.zshrc'
 alias sourcez='source ~/.zshrc'
+alias vimresolv='sudo vim /etc/resolv.conf'
 
 alias topu='top -u `whoami`'
 alias psgrep='ps aux | grep'
