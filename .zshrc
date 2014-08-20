@@ -50,14 +50,19 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
+plugins=(git sublime autojump colorize command-not-found fabric extract node npm python)
+[ -e /etc/arch-release ] && plugins+=archlinux && plugins+=systemd #just for arch linux
+[ -e /usr/bin/yum ] && plugins+=yum  #just for yum.
 
 if [[ -e $ZSH/oh-my-zsh.sh ]]; then
   source $ZSH/oh-my-zsh.sh
 
   #my custom zsh theme.
   local ret_status="%(?:%{$fg_bold[green]%}➜:%{$fg_bold[red]%}➜%s)"
-  local host_info="%{$fg_bold[white]%}%n%{$reset_color%}@%{$fg_bold[red]%}%m%{$reset_color%}"
+  local host_info="%{$fg_bold[green]%}%n%{$reset_color%}@%{$fg_bold[red]%}%m%{$reset_color%}"
+  if [[ -n $SSH_CONNECTION ]]; then
+    host_info="%{$fg_bold[white]%}%n%{$reset_color%}@%{$fg_bold[white]%}%m%{$reset_color%}"
+  fi
   PROMPT='${ret_status}${host_info}%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
   #This line add a right prompt to show the current path. --add by Revir
   RPROMPT='%{$fg[green]%} %~%{$reset_color%}'
@@ -108,10 +113,8 @@ if [ -f ~/.aliases ]; then
     . ~/.aliases
 fi
 
-[[ -s /etc/profile.d/autojump.zsh ]] && . /etc/profile.d/autojump.zsh
-
 #setup python virtualenv
-if which virtualenvwrapper.sh 1>/dev/null; then
+if which virtualenvwrapper.sh 1>/dev/null 2>&1; then
   export VIRTUALENVWRAPPER_PYTHON=$(which python2.7)
   if [[ -d ~/.virtualenvs ]]; then
     export WORKON_HOME=${HOME}/.virtualenvs
@@ -120,3 +123,5 @@ if which virtualenvwrapper.sh 1>/dev/null; then
   fi
   source $(which virtualenvwrapper.sh)
 fi
+
+autoload -U compinit && compinit -u

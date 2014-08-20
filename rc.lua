@@ -487,7 +487,12 @@ awful.rules.rules = {
     { rule = { class = "Nautilus" },
       properties = { tag = tags[1][8] } },
     { rule = { class = "LilyTerm" },
-      properties = { tag = tags[1][9] } }
+      properties = { tag = tags[1][9] } },
+    { rule = { class = "Meld" },
+      properties = { ontop = true,
+                     maximized_vertical = true,
+                     maximized_horizontal = true
+    } }
 }
 -- }}}
 
