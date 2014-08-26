@@ -1,3 +1,4 @@
+#!/bin/zsh
 alias cls='clear'
 alias ll='ls -l'
 alias la='ls -a'
@@ -67,6 +68,7 @@ if [[ -f /etc/centos-release ]]; then
   alias yse='sudo yum search'
   alias yin='sudo yum install'
   alias yql='repoquery -ql'
+  alias ntpdate='sudo ntpdate ntp.fudan.edu.cn'
  
 elif [[ -f /etc/arch-release ]]; then
   alias sysstart='sudo systemctl start'
@@ -82,5 +84,7 @@ elif [[ -f /etc/arch-release ]]; then
   alias pqi='pacman -Qi'
   alias pqo='pacman -Qo'
   alias psy='sudo pacman -Sy'
-  alias psyy='sudo pacman -Syy'  
+  alias psyy='sudo pacman -Syy'
+
+  alias ntpdate='sudo ntpd -q ntp.fudan.edu.cn'
 fi

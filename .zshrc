@@ -1,3 +1,4 @@
+#!/bin/zsh
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -125,3 +126,14 @@ if which virtualenvwrapper.sh 1>/dev/null 2>&1; then
 fi
 
 autoload -U compinit && compinit -u
+
+if [[ -f /etc/centos-release ]]; then
+
+elif [[ -f /etc/arch-release ]]; then
+  if ! which ntpd 1>/dev/null 2>&1; then
+    echo "install ntp and adjust time..."
+    sudo pacman -S ntp
+    sudo ntpd -q ntp.fudan.edu.cn
+  fi
+  
+fi
