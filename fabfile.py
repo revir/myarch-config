@@ -37,6 +37,11 @@ deployHosts = [
     'host': '192.168.1.40',
     'hostShortName': '40',
     'user': 'ari'
+  },
+  {
+    'host': '54.191.14.208',
+    'hostShortName': 'amazon',
+    'user': 'ec2-user'
   }
 ]
 deployFiles = [
