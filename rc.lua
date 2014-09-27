@@ -138,14 +138,14 @@ mytextclock = awful.widget.textclock()
 -- add by Revir
 --  Network usage widget
 netwidget = wibox.widget.textbox()
-vicious.register(netwidget, vicious.widgets.net, '<span color="#CC9393">   ${enp2s0 down_kb}</span> <span color="#7F9F7F"> ${enp2s0 up_kb}  </span>', 3)
+vicious.register(netwidget, vicious.widgets.net, '<span color="#CC9393">   ${wlp2s0 down_kb}</span> <span color="#7F9F7F"> ${wlp2s0 up_kb}  </span>', 3)
 -- Memory usage (progressbar)
 memwidget = awful.widget.progressbar()
 memwidget:set_width(8)
 memwidget:set_height(10)
 memwidget:set_vertical(true)
 memwidget:set_background_color("#494B4F")
-memwidget:set_border_color(nil)
+memwidget:set_border_color("#494949")
 memwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = { {0, "#AECF96"}, {0.5, "#88A175"}, 
                     {1, "#FF5656"}}})
 vicious.register(memwidget, vicious.widgets.mem, "$1", 13)
@@ -156,6 +156,16 @@ cpuwidget:set_background_color("#494B4F")
 cpuwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = { {0, "#FF5656"}, {0.5, "#88A175"}, 
                     {1, "#AECF96" }}})
 vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
+
+--battery
+batterywidget = awful.widget.progressbar()
+batterywidget:set_width(8)
+batterywidget:set_height(10)
+batterywidget:set_vertical(true)
+batterywidget:set_background_color("#494B4F")
+batterywidget:set_border_color("#494949")
+batterywidget:set_color("#00FFB3")
+vicious.register(batterywidget, vicious.widgets.bat, "$2", 61, "BAT0")
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -239,8 +249,9 @@ for s = 1, screen.count() do
 
     -- add by Revir
     right_layout:add(cpuwidget)
-    right_layout:add(memwidget)
     right_layout:add(netwidget)
+    right_layout:add(memwidget)
+    right_layout:add(batterywidget)
 
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
