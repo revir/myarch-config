@@ -138,7 +138,22 @@ mytextclock = awful.widget.textclock()
 -- add by Revir
 --  Network usage widget
 netwidget = wibox.widget.textbox()
-vicious.register(netwidget, vicious.widgets.net, '<span color="#CC9393">   ${wlp2s0 down_kb}</span> <span color="#7F9F7F"> ${wlp2s0 up_kb}  </span>', 3)
+vicious.register(netwidget, vicious.widgets.net,
+  function ( widget, args )
+    local down_kb = 0.0
+    local up_kb = 0.0
+    if args["{wlp2s0 down_kb}"] ~= nil then
+      down_kb = args["{wlp2s0 down_kb}"]
+      up_kb = args["{wlp2s0 up_kb}"]
+    elseif args["{enp2s0 down_kb}"] ~= nil then
+      down_kb = args["{enp2s0 down_kb}"]
+      up_kb = args["{enp2s0 up_kb}"]
+    else
+      return
+    end
+    return string.format('<span color="#CC9393"> %.1f</span> <span color="#7F9F7F"> %.1f</span>', down_kb, up_kb)
+  end
+  , 3)
 -- Memory usage (progressbar)
 memwidget = awful.widget.progressbar()
 memwidget:set_width(8)
@@ -146,18 +161,19 @@ memwidget:set_height(10)
 memwidget:set_vertical(true)
 memwidget:set_background_color("#494B4F")
 memwidget:set_border_color("#494949")
-memwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = { {0, "#AECF96"}, {0.5, "#88A175"}, 
+memwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = { {0, "#AECF96"}, {0.5, "#88A175"},
                     {1, "#FF5656"}}})
 vicious.register(memwidget, vicious.widgets.mem, "$1", 13)
 -- CPU usage (graph)
 cpuwidget = awful.widget.graph()
 cpuwidget:set_width(50)
 cpuwidget:set_background_color("#494B4F")
-cpuwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = { {0, "#FF5656"}, {0.5, "#88A175"}, 
+cpuwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = { {0, "#FF5656"}, {0.5, "#88A175"},
                     {1, "#AECF96" }}})
 vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
 
 --battery
+local batInterval = 61
 batterywidget = awful.widget.progressbar()
 batterywidget:set_width(8)
 batterywidget:set_height(10)
@@ -165,7 +181,23 @@ batterywidget:set_vertical(true)
 batterywidget:set_background_color("#494B4F")
 batterywidget:set_border_color("#494949")
 batterywidget:set_color("#00FFB3")
-vicious.register(batterywidget, vicious.widgets.bat, "$2", 61, "BAT0")
+vicious.register(batterywidget, vicious.widgets.bat,
+  function ( widget, args )
+    if args[1] == '⌁' then -- battery state is unknow
+      batterywidget:set_width(0)
+      batInterval = 61*1000
+      return
+    elseif args[1] == "↯" then  -- full
+      batterywidget:set_color("#00FFB3")  --green color
+    elseif args[1] == "+" then -- charging
+      batterywidget:set_color("#D6E718") --yellow color
+    elseif args[1] == "-" then -- Discharging
+      batterywidget:set_color("#E7188E") --red color
+    end
+    batInterval = 61
+    return args[2]
+  end
+  , batInterval, "BAT0")
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -283,14 +315,14 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
-	
+
     -- Customized by Revir. Has bugs. only works for 9 tags
     awful.key({                   }, "Print", function () awful.util.spawn("scrot -e 'mv $f ~/Images/scrot/'") end),
     awful.key({ modkey,           }, "Print", false, function() awful.util.spawn("scrot -s -e 'mv $f ~/Images/scrot/'") end),
     awful.key({ modkey,           }, "a", false, function() awful.util.spawn("scrot -s -e 'mv $f ~/Images/scrot/'") end),
     awful.key({ modkey,           }, "d", false, function() awful.util.spawn("scrot -d3 -s -e 'mv $f ~/Images/scrot/'") end),
 
-    awful.key({}, "#199", 
+    awful.key({}, "#199",
         function ()
             if touchpad_b then
                 awful.util.spawn("synclient TouchpadOff=1")
@@ -302,9 +334,9 @@ globalkeys = awful.util.table.join(
 
     awful.key({}, "#122", function () awful.util.spawn("amixer -q sset PCM 4dB-") end),
     awful.key({}, "#123", function () awful.util.spawn("amixer -q sset PCM 4dB+") end),
-    awful.key({}, "#121", function () awful.util.spawn("amixer -q sset Master toggle") end),     
+    awful.key({}, "#121", function () awful.util.spawn("amixer -q sset Master toggle") end),
 
-	awful.key({ modkey, "Shift"   }, "Left", 
+	awful.key({ modkey, "Shift"   }, "Left",
 		function ()
             if client.focus then
 				local curidx = awful.tag.getidx()
@@ -317,7 +349,7 @@ globalkeys = awful.util.table.join(
 				awful.tag.viewprev()
        	    end
         end),
-	awful.key({ modkey, "Shift"   }, "Right", 
+	awful.key({ modkey, "Shift"   }, "Right",
 		function ()
             if client.focus then
 				local curidx = awful.tag.getidx()
@@ -330,9 +362,9 @@ globalkeys = awful.util.table.join(
 				awful.tag.viewnext()
       	    end
         end),
-	awful.key({ modkey,            }, "F12", 
-		function () 
-			awful.util.spawn("xlock") 
+	awful.key({ modkey,            }, "F12",
+		function ()
+			awful.util.spawn("xlock")
 		end),
 
     awful.key({ modkey,           }, "j",
@@ -591,7 +623,7 @@ function run_once(prg,arg_string,pname,screen)
        pname = prg
     end
 
-    if not arg_string then 
+    if not arg_string then
         awful.util.spawn_with_shell("pgrep -u $USER -x '" .. pname .. "' || (" .. prg .. ")",screen)
     else
         awful.util.spawn_with_shell("pgrep -u $USER -x '" .. pname .. "' || (" .. prg .. " " .. arg_string .. ")",screen)
