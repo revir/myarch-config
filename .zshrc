@@ -104,7 +104,7 @@ if [ -e /usr/bin/keychain ]; then
   elif [[ -f ~/.ssh/rsarevir_20130527 ]]; then
     /usr/bin/keychain -Q -q ~/.ssh/rsarevir_20130527
   fi
-  
+
   [[ -f $HOME/.keychain/arch-revir-sh ]] && source $HOME/.keychain/arch-revir-sh
   [[ -f $HOME/.keychain/mylinux-sh ]] && source $HOME/.keychain/mylinux-sh
 fi
@@ -135,5 +135,11 @@ elif [[ -f /etc/arch-release ]]; then
     sudo pacman -S ntp
     sudo ntpd -q ntp.fudan.edu.cn
   fi
-  
+
 fi
+
+#add this function because git auto completion is veryyyyy slow, this fix it.
+#see: http://stackoverflow.com/questions/9810327/git-tab-autocompletion-is-useless-can-i-turn-it-off-or-optimize-it?answertab=votes#tab-top
+__git_files () {
+  _wanted files expl 'local files' _files
+}
