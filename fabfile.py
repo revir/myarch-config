@@ -4,7 +4,7 @@
 from fabric.api import env
 from fabric.operations import run, put, local
 # from fabric.context_managers import cd, lcd
-import os, time
+import os, time, re
 import fabric
 
 deployHosts = [
@@ -36,7 +36,7 @@ deployHosts = [
   {
     'host': '192.168.1.40',
     'hostShortName': '40',
-    'user': 'ari'
+    'user': 'webimager'
   },
   {
     'host': '54.191.14.208',
@@ -91,7 +91,9 @@ def getHost(name):
       return item
     if item.get('host') == name:
       return item
-      
+  if re.search('\d+[.]\d+[.]\d+[.]\d+', name):
+    return {'host': name}
+
 def getFile(name):
   for item in deployFiles:
     if item.get('name') == name:
@@ -125,15 +127,19 @@ def _installAutoJump():
       _run('cd ~/autojump && python install.py')
     if not _exists('/usr/local/bin/autojump'):
       _run('sudo cp ~/.autojump/bin/autojump  /usr/local/bin/')
+    if not _exists('~/.autojump/etc/profile.d/autojump.zsh'):
+      _run('sudo cp ~/.autojump/share/autojump/autojump.zsh /etc/profile.d/')
 
-def deploy(server='loc', name='all'):
+def deploy(server='loc', name='all', user="none"):
   if server is 'loc':
     _initLoc()
   else:
     hostInfo = getHost(server)
     if not hostInfo:
       return
-    _initRemote(hostInfo.get('user') or 'root', hostInfo['host'])
+    if user == 'none':
+      user = hostInfo.get('user') or 'root'
+    _initRemote(user, hostInfo['host'])
 
   _installZsh()
   _installOhMyZsh()
@@ -143,7 +149,7 @@ def deploy(server='loc', name='all'):
     for item in deployFiles:
       deploy(server, item['name'])
     return
-  
+
   f = getFile(name)
   if f:
     rpath = f.get('rpath') or '~/'
