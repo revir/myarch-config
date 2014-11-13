@@ -332,9 +332,15 @@ globalkeys = awful.util.table.join(
             touchpad_b = not touchpad_b
         end),
 
-    awful.key({}, "#122", function () awful.util.spawn("amixer -q sset PCM 4dB-") end),
-    awful.key({}, "#123", function () awful.util.spawn("amixer -q sset PCM 4dB+") end),
-    awful.key({}, "#121", function () awful.util.spawn("amixer -q sset Master toggle") end),
+    awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -q sset Master 9%-") end),
+    awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -q sset Master 9%+") end),
+    awful.key({}, "XF86AudioMute", function () awful.util.spawn("amixer -q sset Master toggle") end),
+
+    -- brightness
+    awful.key({ }, "XF86MonBrightnessDown", function ()
+            awful.util.spawn("xbacklight -dec 15") end),
+    awful.key({ }, "XF86MonBrightnessUp", function ()
+            awful.util.spawn("xbacklight -inc 15") end),
 
 	awful.key({ modkey, "Shift"   }, "Left",
 		function ()

@@ -131,7 +131,7 @@ def _installAutoJump():
       _run('sudo cp ~/.autojump/share/autojump/autojump.zsh /etc/profile.d/')
 
 def deploy(server='loc', name='all', user="none"):
-  if server is 'loc':
+  if server == 'loc':
     _initLoc()
   else:
     hostInfo = getHost(server)
