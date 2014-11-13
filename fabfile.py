@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from fabric.api import env
+from fabric.api import settings
 from fabric.operations import run, put, local
 # from fabric.context_managers import cd, lcd
 import os, time, re
@@ -108,7 +109,7 @@ def backupRemote(name, rpath):
 def _installZsh():
   if not _exists('/bin/zsh'):
     if _exists('/usr/bin/pacman'):
-      _run('sudo pacman -S zsh')
+      _run('sudo pacman -S --noconfirm zsh')
     elif _exists('/usr/bin/yum'):
       _run('sudo yum install zsh')
 
@@ -119,7 +120,7 @@ def _installOhMyZsh():
 def _installAutoJump():
   if _exists('/usr/bin/pacman'):
     if not _exists('/etc/profile.d/autojump.zsh'):
-      _run('sudo pacman -S autojump')
+      _run('sudo pacman -S --noconfirm autojump')
 
   elif _exists('/usr/bin/yum'):
     if not _exists('~/.autojump'):
@@ -129,6 +130,21 @@ def _installAutoJump():
       _run('sudo cp ~/.autojump/bin/autojump  /usr/local/bin/')
     if not _exists('~/.autojump/etc/profile.d/autojump.zsh'):
       _run('sudo cp ~/.autojump/share/autojump/autojump.zsh /etc/profile.d/')
+
+def _install(name):
+  def _check(cmd):
+    with settings(warn_only=True):
+      result = _run(cmd)
+      if result.return_code == 0:
+        return True
+      else:
+        return False
+
+  if _exists('/usr/bin/pacman'):
+    if not _check('pacman -Ql %s >/dev/null' % name):
+      _run('sudo pacman -S --noconfirm '+name)
+  elif _exists('/usr/bin/yum'):
+    pass  #TODO
 
 def deploy(server='loc', name='all', user="none"):
   if server == 'loc':
@@ -154,5 +170,13 @@ def deploy(server='loc', name='all', user="none"):
   if f:
     rpath = f.get('rpath') or '~/'
     if _exists(rpath):
+
+      if name== 'rc.lua':
+        _install('xlockmore')
+
       backupRemote(f['name'], rpath)
       _put(f['name'], rpath)
+
+def testLocalSudo():
+  _initLoc()
+  sudo('ls ~')

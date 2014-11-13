@@ -322,7 +322,11 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "a", false, function() awful.util.spawn("scrot -s -e 'mv $f ~/Images/scrot/'") end),
     awful.key({ modkey,           }, "d", false, function() awful.util.spawn("scrot -d3 -s -e 'mv $f ~/Images/scrot/'") end),
 
-    awful.key({}, "#199",
+    awful.key({ modkey,           }, "l", false, function() awful.util.spawn("xlock") end),
+
+    -- install xorg-xmodmap, run 'xmodmap -pke' to see all the x mod keys.
+    -- see: https://wiki.archlinux.org/index.php/xmodmap
+    awful.key({}, "XF86TouchpadToggle",
         function ()
             if touchpad_b then
                 awful.util.spawn("synclient TouchpadOff=1")
